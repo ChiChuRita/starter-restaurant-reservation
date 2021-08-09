@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=autobank71
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=ra.singh069@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=autobank71
+    ports:
+      - 1337:80
+    links:
+      - "database:db"
