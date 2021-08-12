@@ -38,11 +38,10 @@ async function fetchJson(url, options, onCancel) {
     }
 
     const payload = await response.json();
-
     if (payload.error) {
       return Promise.reject({ message: payload.error });
     }
-    return payload.data;
+    return payload;
   } catch (error) {
     if (error.name !== "AbortError") {
       console.error(error.stack);
@@ -66,4 +65,38 @@ export async function listReservations(params, signal) {
   return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+export async function insertNewReservation(resData) {
+  try {
+    const url = new URL(`${API_BASE_URL}/reservations/new`);
+    await fetch(url, {
+      headers,
+      method: "POST",
+      body: JSON.stringify(resData),
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function insertNewTable(tData) {
+  try {
+    const url = new URL(`${API_BASE_URL}/tables/new`);
+    await fetch(url, {
+      headers,
+      method: "POST",
+      body: JSON.stringify(tData),
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function listTables(params, signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.append(key, value.toString())
+  );
+  return await fetchJson(url, { headers, signal }, []);
 }

@@ -1,3 +1,5 @@
+const dateFormat = /\d\d\d\d-\d\d-\d\d/;
+const timeFormat = /\d\d:\d\d/;
 /**
  * Formats a Date object as YYYY-MM-DD.
  *
@@ -13,16 +15,17 @@ const asDateString = (date) => {
   return `${date.getFullYear().toString(10)}-${(date.getMonth() + 1)
     .toString(10)
     .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
-}
+};
 
 /** Formats the date of today as YYYY-MM-DD.
  * @returns {string}
  * Todays date formatted as YYYY-MM-DD
-*/
+ */
 const today = () => {
   return asDateString(new Date());
-}
+};
 
 module.exports = {
-  today
-}
+  today,
+  asDateString,
+};
