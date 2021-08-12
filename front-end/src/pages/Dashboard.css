@@ -1,0 +1,8 @@
+.reservations-container {
+  display: grid;
+  margin: 24px 0px;
+
+  grid-template-columns: repeat(auto-fit, clamp(370px, 370px, 800px));
+  column-gap: 24px;
+  row-gap: 24px;
+}

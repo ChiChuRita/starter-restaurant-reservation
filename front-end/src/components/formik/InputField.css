@@ -1,0 +1,14 @@
+.inputfield {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 0px;
+}
+
+.inputfield p {
+  margin: 0 0 5px 0px;
+  color: red;
+}

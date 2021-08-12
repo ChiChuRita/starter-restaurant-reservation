@@ -1,0 +1,8 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form p {
+  color: red;
+}
