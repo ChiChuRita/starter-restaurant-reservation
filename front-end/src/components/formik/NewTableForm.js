@@ -11,7 +11,7 @@ function NewTableForm() {
   function onSubmit(values) {
     try {
       insertNewTable(values);
-      history.push("/dashboard");
+      window.location = "/dashboard";
     } catch (err) {
       console.log(err);
     }
@@ -29,7 +29,6 @@ function NewTableForm() {
     <Formik
       initialValues={{
         table_name: "",
-        capacity: 1,
       }}
       onSubmit={onSubmit}
       validationSchema={tableSchema}

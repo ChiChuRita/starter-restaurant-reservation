@@ -8,6 +8,8 @@ const mobileNumberPattern = /[+]?[0-9-()]+$/;
 function timeValidation(value, { parent }) {
   const { reservation_date } = parent;
 
+  if (!reservation_date || !value) return false;
+
   //only if the reservation date is for today the time can be in the past
   if (!asDateString(reservation_date) === today()) return true;
 
@@ -19,6 +21,8 @@ function timeValidation(value, { parent }) {
 //user story 3 time validation
 //checks if the time for the reservation is between 10:30 and 21:30 (outside of the time span the resturant is closed)
 function checkOpenHours(value) {
+  if (!value) return false;
+
   let valueAsDate = new Date(0, 0, 0);
   valueAsDate.setHours(value.split(":")[0]);
   valueAsDate.setMinutes(value.split(":")[1]);
@@ -31,40 +35,57 @@ function checkOpenHours(value) {
 //user story 2 date validation
 //checks if is it not tuesday (tuesdays the resturant is closed)
 function checkOpenDays(value) {
-  return value.getDay() != 2;
+  return value && value.getDay() != 2;
 }
 
 //user story 1 formal validation
 const reservationSchema = yup.object().shape({
   first_name: yup.string().max(256).required(),
   last_name: yup.string().max(256).required(),
-  mobile_number: yup
-    .string()
-    .max(256)
-    .matches(mobileNumberPattern, "No valid phone number")
-    .required(),
+  mobile_number: yup.string().max(256).matches(mobileNumberPattern).required(),
   reservation_date: yup
     .date()
-    .min(today(), "Date is in the past")
-    .test("openDays", "Resturant is not open", checkOpenDays)
+    .min(today())
     .required()
-    .typeError("Must be a valid date"),
+    .test(
+      "openDays",
+      "invalid reservation_date and reservation_time, resturant is closed!",
+      checkOpenDays
+    ),
   reservation_time: yup
     .string()
     .max(256)
-    .matches(timePattern, "No valid Time")
+    .matches(timePattern)
     .required()
-    .test("timeValid", "Time is in the past", timeValidation)
-    .test("openHours", "Resturant is not open", checkOpenHours),
-  people: yup.number().min(1).required().typeError("Must be a number"),
+    .test(
+      "timeValid",
+      "invalid reservation_date and reservation_time (set time to future)",
+      timeValidation
+    )
+    .test(
+      "openHours",
+      "invalid reservation_date and reservation_time, resturant is closed!",
+      checkOpenHours
+    ),
+  people: yup.number().min(1).required().strict(),
+  status: yup
+    .string()
+    .matches(/(booked)/, ({ value }) => `invalid status: ${value}`),
 });
 
 const tableSchema = yup.object().shape({
   table_name: yup.string().min(2).max(256).required(),
-  capacity: yup.number().min(1).required().typeError("Must be a number"),
+  capacity: yup.number().min(1).required(),
 });
+
+const numberSchema = yup
+  .string()
+  .max(256)
+  .matches(mobileNumberPattern)
+  .required();
 
 module.exports = {
   reservationSchema,
   tableSchema,
+  numberSchema,
 };

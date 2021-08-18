@@ -3,13 +3,14 @@
   flex-direction: column;
   border-radius: 22px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+  margin: 15px 0px;
+  padding: 22px 28px;
 }
 
 .reservation h1 {
-  margin: 18px 36px;
+  margin-bottom: 12px;
   padding: 0;
 
-  font-weight: bold;
   font-size: 24px;
 }
 
@@ -21,22 +22,68 @@
 }
 
 .data-container {
-  margin: 18px 36px;
-  margin-top: 0;
+  margin-bottom: 12px;
 
   height: 96px;
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
 }
 
 .data {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  margin-left: 15px;
 }
 
-.id-column {
-  justify-content: flex-end;
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reservation a {
+  border: none;
+  outline: none;
+
+  color: white;
+  font-size: 20px;
+  padding: 7px 24px;
+  background: #116acc;
+  border-radius: 7px;
+
+  transition: 300ms;
+}
+
+.reservation a:hover {
+  text-decoration: none;
+  background: #116bcce0;
+
+  transition: 300ms;
+}
+
+.reservation button {
+  border: none;
+  outline: none;
+
+  color: white;
+  font-size: 20px;
+  padding: 7px 24px;
+  background: #116acc;
+  border-radius: 7px;
+
+  transition: 300ms;
+}
+
+.reservation button:hover {
+  text-decoration: none;
+  background: #116bcce0;
+
+  transition: 300ms;
 }

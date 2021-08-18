@@ -8,14 +8,9 @@ const InputField = ({ name, fprops, type, children }) => {
     <div className="inputfield">
       <label htmlFor={name}>{children}</label>
       <Field type={type} name={name} />
-      <p
-        className="alert alert-danger"
-        style={{
-          visibility: !(errors[name] && touched[name]) ? "hidden" : "visible",
-        }}
-      >
-        {errors[name] + ""}
-      </p>
+      {errors[name] && touched[name] ? (
+        <p className="alert alert-danger">{errors[name]}</p>
+      ) : null}
     </div>
   );
 };

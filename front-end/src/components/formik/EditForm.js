@@ -1,19 +1,19 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { today } from "../../utils/date-time";
-import { insertNewReservation } from "../../utils/api";
+import { updateReservation } from "../../utils/api";
 import { reservationSchema } from "../../utils/validation";
 import { useHistory } from "react-router-dom";
 
 import InputField from "./InputField";
+import { asDateString, formatAsTime } from "../../utils/date-time";
 
-const NewReservationForm = () => {
-  let history = useHistory();
+const NewReservationForm = ({ reservation }) => {
+  const history = useHistory();
 
   function onSubmit(data) {
     try {
-      insertNewReservation(data);
-      window.location = `/dashboard/?date=${data.reservation_date}`;
+      updateReservation(reservation.reservation_id, data);
+      history.goBack();
     } catch (err) {
       console.log(err);
     }
@@ -30,12 +30,12 @@ const NewReservationForm = () => {
   return (
     <Formik
       initialValues={{
-        first_name: "",
-        last_name: "",
-        mobile_number: "",
-        reservation_date: today(),
-        reservation_time: new Date().toLocaleTimeString().substring(0, 5),
-        people: 1,
+        first_name: reservation.first_name,
+        last_name: reservation.last_name,
+        mobile_number: reservation.mobile_number,
+        reservation_date: asDateString(new Date(reservation.reservation_date)),
+        reservation_time: formatAsTime(reservation.reservation_time),
+        people: reservation.people,
       }}
       onSubmit={onSubmit}
       validationSchema={reservationSchema}

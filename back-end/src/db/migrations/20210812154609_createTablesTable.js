@@ -4,11 +4,15 @@ exports.up = function (knex) {
     table.timestamps(true, true);
     table.string("table_name");
     table.integer("capacity");
-    table.integer("reservation_id");
     table.boolean("free").defaultTo(true);
+    table
+      .integer("reservation_id")
+      .references("reservation_id")
+      .inTable("reservations")
+      .onDelete("CASCADE");
   });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable("tables");
+  return knex.schema.dropTableIfExists("tables");
 };

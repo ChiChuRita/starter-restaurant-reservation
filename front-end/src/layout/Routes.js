@@ -5,6 +5,8 @@ import Dashboard from "../pages/Dashboard";
 import NewReservation from "../pages/NewReservation";
 import NewTable from "../pages/NewTable";
 import Search from "../pages/Search";
+import Seat from "../pages/Seat";
+import EditReservation from "../pages/EditReservation";
 import NotFound from "./NotFound";
 
 /**
@@ -22,6 +24,12 @@ function Routes() {
       </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
+      </Route>
+      <Route exact={true} path="/reservations/:reservation_id/seat">
+        <Seat />
+      </Route>
+      <Route exact={true} path="/reservations/:reservation_id/edit">
+        <EditReservation />
       </Route>
       <Route path="/dashboard">
         <Dashboard />

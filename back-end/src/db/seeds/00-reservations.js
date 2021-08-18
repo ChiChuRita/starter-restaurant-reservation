@@ -3,8 +3,8 @@ const path = require("path");
 
 //seeds the reservations table for testing purpose
 exports.seed = function (knex) {
-  return knex("reservations")
-    .del()
+  return knex
+    .raw("TRUNCATE TABLE reservations RESTART IDENTITY CASCADE")
     .then(function () {
       return knex("reservations").insert(
         JSON.parse(
