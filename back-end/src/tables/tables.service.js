@@ -12,17 +12,17 @@ async function getTable(tableID) {
 async function availableSeats(minCapacity) {
   return await knex("tables")
     .where("capacity", ">=", minCapacity)
-    .andWhere("free", true);
+    .andWhere("reservation_id", null);
 }
 
 async function insertTable(table) {
-  await knex("tables").insert(table);
+  return (await knex("tables").insert(table).returning("table_id"))[0];
 }
 
 async function assignReservationToSeat(tableID, reservation) {
   let table = await knex("tables")
     .where("capacity", ">=", reservation.people)
-    .andWhere("free", true)
+    .andWhere("reservation_id", null)
     .andWhere("table_id", tableID)
     .first();
 
@@ -35,7 +35,6 @@ async function assignReservationToSeat(tableID, reservation) {
     await trans("tables")
       .update("reservation_id", reservation.reservation_id)
       .where("table_id", tableID);
-    await trans("tables").update("free", false).where("table_id", tableID);
     await trans("reservations")
       .update("status", "seated")
       .where("reservation_id", reservation.reservation_id);
@@ -43,14 +42,14 @@ async function assignReservationToSeat(tableID, reservation) {
 }
 
 async function deleteSeating(table) {
-  if (table.free) throw new Error("Table not occupied!");
+  if (!table.reservation_id) throw new Error("Table not occupied!");
 
   await knex.transaction(async (trans) => {
     await trans("reservations")
       .update({ status: "finished" })
       .where("reservation_id", table.reservation_id);
     await trans("tables")
-      .update({ free: true, reservation_id: null })
+      .update({ reservation_id: null })
       .where("table_id", table.table_id);
   });
 }

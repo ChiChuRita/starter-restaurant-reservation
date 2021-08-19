@@ -8,10 +8,10 @@ import { tableSchema } from "../../utils/validation";
 function NewTableForm() {
   let history = useHistory();
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
     try {
-      insertNewTable(values);
-      window.location = "/dashboard";
+      await insertNewTable(values);
+      history.push("/dashboard");
     } catch (err) {
       console.log(err);
     }

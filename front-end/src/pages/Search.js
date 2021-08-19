@@ -4,6 +4,8 @@ import { listReservations } from "../utils/api";
 import Reservation from "../components/Reservation";
 import ErrorAlert from "../layout/ErrorAlert";
 
+import "./Search.css";
+
 function Search() {
   const [query, setQuery] = useState(null);
 
@@ -27,9 +29,11 @@ function Search() {
       <div className="d-md-flex mb-3"></div>
       <ErrorAlert error={reservationsError} />
       {!query && <SearchForm setQuery={setQuery} />}
-      {reservations.map((rData, index) => (
-        <Reservation key={index} reservationData={rData} />
-      ))}
+      <div className="reservations-container">
+        {reservations.map((rData, index) => (
+          <Reservation key={index} reservationData={rData} search />
+        ))}
+      </div>
       {query && reservations.length === 0 && <p>No reservations found</p>}
     </main>
   );

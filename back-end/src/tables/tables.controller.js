@@ -18,8 +18,8 @@ async function list(req, res, next) {
 
 async function newTable(req, res, next) {
   await tableSchema.validate(req.body.data);
-  await insertTable(req.body.data);
-  res.status(201).json({ data: req.body.data });
+  let table_id = await insertTable(req.body.data);
+  res.status(201).json({ data: { table_id, ...req.body.data } });
 }
 
 async function assignSeat(req, res, next) {
@@ -42,7 +42,7 @@ async function assignSeat(req, res, next) {
     return next({ message: "reservation already seated!", status: 400 });
 
   await assignReservationToSeat(tableID, reservation);
-  res.sendStatus(200);
+  res.json({});
 }
 
 async function getAvailableTables(req, res, next) {

@@ -19,7 +19,9 @@ async function getReservationsByNumber(number) {
 
 //inserts a new reservation to the database
 async function insertReservation(reservation) {
-  return await knex("reservations").insert(reservation);
+  return (
+    await knex("reservations").insert(reservation).returning("reservation_id")
+  )[0];
 }
 
 async function updateReservation(reservation) {

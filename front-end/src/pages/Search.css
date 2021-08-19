@@ -1,0 +1,6 @@
+.reservations-container {
+  display: grid;
+  grid-template-columns: 1;
+  row-gap: 25px;
+  margin: 25px 0px;
+}

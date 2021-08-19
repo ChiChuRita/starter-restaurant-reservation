@@ -5,15 +5,19 @@ import { reservationSchema } from "../../utils/validation";
 import { useHistory } from "react-router-dom";
 
 import InputField from "./InputField";
-import { asDateString, formatAsTime } from "../../utils/date-time";
+import {
+  asDateString,
+  formatAsDate,
+  formatAsTime,
+} from "../../utils/date-time";
 
 const NewReservationForm = ({ reservation }) => {
-  const history = useHistory();
+  let history = useHistory();
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     try {
-      updateReservation(reservation.reservation_id, data);
-      history.goBack();
+      await updateReservation(reservation.reservation_id, data);
+      history.push(`/dashboard/?date=${formatAsDate(data.reservation_date)}`);
     } catch (err) {
       console.log(err);
     }
@@ -21,7 +25,9 @@ const NewReservationForm = ({ reservation }) => {
 
   function onCancel() {
     try {
-      history.goBack();
+      history.push(
+        `/dashboard/?date=${formatAsDate(reservation.reservation_date)}`
+      );
     } catch (err) {
       console.log(err);
     }

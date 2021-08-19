@@ -24,7 +24,7 @@ function Dashboard() {
   const [tablesError, setTablesError] = useState(null);
 
   const [date, setDate] = useState(today());
-  const query = useQuery();
+  let query = useQuery();
 
   // sets the date for the dashboard if date is provided in the query
   useEffect(() => {
@@ -34,9 +34,13 @@ function Dashboard() {
     } catch {
       setDate(today());
     }
-  }, []);
+  }, [query]);
 
   useEffect(loadDashboard, [date]);
+
+  function setQuery(date) {
+    window.location = `/dashboard/?date=${date}`;
+  }
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -45,9 +49,7 @@ function Dashboard() {
       .then(setReservations)
       .catch(setReservationsError);
     setTablesError(null);
-    listTables({}, abortController.signal)
-      .then(setTables)
-      .catch(setTablesError);
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -58,9 +60,9 @@ function Dashboard() {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <button onClick={() => setDate(previous(date))}>Previous</button>
-      <button onClick={() => setDate(today())}>Today</button>
-      <button onClick={() => setDate(next(date))}>Next</button>
+      <button onClick={() => setQuery(previous(date))}>Previous</button>
+      <button onClick={() => setQuery(today())}>Today</button>
+      <button onClick={() => setQuery(next(date))}>Next</button>
       <div className="reservations-container">
         {reservations.map((resData, index) => (
           <Reservation key={index} reservationData={resData} />

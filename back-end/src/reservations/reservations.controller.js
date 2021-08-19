@@ -40,10 +40,8 @@ async function listByID(req, res, next) {
 async function createNewOrder(req, res) {
   //backend validation of new reservation
   await reservationSchema.validate(req.body.data);
-
-  await insertReservation(req.body.data);
-
-  res.status(201).json({ data: req.body.data });
+  let reservation_id = await insertReservation(req.body.data);
+  res.status(201).json({ data: { reservation_id, ...req.body.data } });
 }
 
 async function update(req, res, next) {

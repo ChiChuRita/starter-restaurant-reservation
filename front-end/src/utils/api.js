@@ -98,17 +98,14 @@ export async function insertNewTable(tData) {
   }
 }
 
-export async function assignTable(reservation_id, table_id) {
-  try {
-    const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
-    await fetch(url, {
-      headers,
-      method: "PUT",
-      body: JSON.stringify({ data: { reservation_id } }),
-    });
-  } catch (err) {
-    console.log(err);
-  }
+export async function assignTable(reservation_id, table_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
+  await fetchJson(url, {
+    signal,
+    headers,
+    method: "PUT",
+    body: JSON.stringify({ data: { reservation_id } }),
+  });
 }
 
 export async function deleteAssignment(table_id) {
@@ -123,20 +120,9 @@ export async function deleteAssignment(table_id) {
   }
 }
 
-export async function listTables(params, signal) {
+export async function listTables(signal) {
   const url = new URL(`${API_BASE_URL}/tables`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
-  return await fetchJson(url, { headers, signal }, []);
-}
-
-export async function listAvailableTables(params, signal) {
-  const url = new URL(`${API_BASE_URL}/tables/freetables`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
-  return await fetchJson(url, { headers, signal }, []);
+  return await fetchJson(url, { signal }, []);
 }
 
 export async function cancelReservation(reservation_id) {

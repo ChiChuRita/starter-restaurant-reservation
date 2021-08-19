@@ -1,16 +1,43 @@
 .reservation {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  row-gap: 18px;
+
+  margin: 0;
+  padding: 1.5rem 2rem;
+
   border-radius: 22px;
+
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-  margin: 15px 0px;
-  padding: 22px 28px;
 }
 
+.reservation .main-container {
+  display: grid;
+  grid-template-columns: max-content auto;
+  column-gap: 20px;
+}
+
+.reservation .label-container {
+}
+
+.reservation .data-container {
+}
+
+.reservation .status-container {
+  align-self: center;
+}
+
+.reservation .button-container {
+  display: grid;
+  grid-template-columns: min-content min-content min-content;
+  column-gap: 15px;
+}
+
+/* single elements */
 .reservation h1 {
-  margin-bottom: 12px;
+  margin: 0;
   padding: 0;
 
+  font-weight: normal;
   font-size: 24px;
 }
 
@@ -21,42 +48,18 @@
   font-size: 20px;
 }
 
-.data-container {
-  margin-bottom: 12px;
-
-  height: 96px;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.label {
-  display: flex;
-  flex-direction: column;
-}
-
-.data {
-  display: flex;
-  flex-direction: column;
-  margin-left: 15px;
-}
-
-.button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .reservation a {
+  margin: 0;
+  padding: 8px 1em;
+
   border: none;
   outline: none;
 
   color: white;
   font-size: 20px;
-  padding: 7px 24px;
   background: #116acc;
   border-radius: 7px;
+  text-align: center;
 
   transition: 300ms;
 }
@@ -69,13 +72,15 @@
 }
 
 .reservation button {
+  margin: 0;
+  padding: 6px 1em;
+
   border: none;
   outline: none;
 
   color: white;
   font-size: 20px;
-  padding: 7px 24px;
-  background: #116acc;
+  background: #fd4e5d;
   border-radius: 7px;
 
   transition: 300ms;
@@ -83,7 +88,30 @@
 
 .reservation button:hover {
   text-decoration: none;
-  background: #116bcce0;
+  background: #ff6875;
 
   transition: 300ms;
+}
+
+@media only screen and (max-width: 768px) {
+  .reservation a {
+    font-size: 14px;
+  }
+
+  .reservation .button-container {
+    grid-template-columns: auto auto auto;
+    column-gap: 8px;
+  }
+
+  .reservation button {
+    font-size: 14px;
+  }
+
+  .reservation h1 {
+    font-size: 16px;
+  }
+
+  .reservation p {
+    font-size: 14px;
+  }
 }

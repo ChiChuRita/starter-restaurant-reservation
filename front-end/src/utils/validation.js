@@ -15,6 +15,7 @@ function timeValidation(value, { parent }) {
 
   reservation_date.setHours(value.split(":")[0]);
   reservation_date.setMinutes(value.split(":")[1]);
+  reservation_date.setSeconds(59);
   return new Date() <= reservation_date;
 }
 

@@ -1,12 +1,14 @@
 import { deleteAssignment } from "../utils/api";
-
+import { useHistory } from "react-router";
 import "./Table.css";
 
 function Table({ tableData }) {
-  function onFinish() {
-    window.confirm("Finish reservation!");
-    window.location.reload();
-    deleteAssignment(tableData.table_id);
+  let history = useHistory();
+
+  async function onFinish() {
+    if (!window.confirm("Is this table ready to seat new guests?")) return;
+    await deleteAssignment(tableData.table_id);
+    history.go(0);
   }
 
   return (
@@ -16,13 +18,17 @@ function Table({ tableData }) {
         <p>Capacity: {tableData.capacity}</p>
       </div>
       <div className="availability">
-        <div data-table-id-status={tableData.table_id}>
-          {tableData.free ? <p>Free</p> : <p>Occupied</p>}
+        <div>
+          {!tableData.reservation_id ? (
+            <p data-table-id-status={tableData.table_id}>free</p>
+          ) : (
+            <p data-table-id-status={tableData.table_id}>occupied</p>
+          )}
         </div>
-        <div className={tableData.free ? "free" : "occupied"}></div>
+        <div className={!tableData.reservation_id ? "free" : "occupied"}></div>
       </div>
       <div className="button-container">
-        {!tableData.free && (
+        {tableData.reservation_id && (
           <button data-table-id-finish={tableData.table_id} onClick={onFinish}>
             Finished
           </button>

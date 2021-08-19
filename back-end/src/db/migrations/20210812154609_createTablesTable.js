@@ -4,7 +4,6 @@ exports.up = function (knex) {
     table.timestamps(true, true);
     table.string("table_name");
     table.integer("capacity");
-    table.boolean("free").defaultTo(true);
     table
       .integer("reservation_id")
       .references("reservation_id")

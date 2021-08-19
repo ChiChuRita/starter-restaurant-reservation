@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { today } from "../../utils/date-time";
+import { formatAsDate, today } from "../../utils/date-time";
 import { insertNewReservation } from "../../utils/api";
 import { reservationSchema } from "../../utils/validation";
 import { useHistory } from "react-router-dom";
@@ -10,10 +10,10 @@ import InputField from "./InputField";
 const NewReservationForm = () => {
   let history = useHistory();
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     try {
-      insertNewReservation(data);
-      window.location = `/dashboard/?date=${data.reservation_date}`;
+      await insertNewReservation(data);
+      history.push(`/dashboard/?date=${formatAsDate(data.reservation_date)}`);
     } catch (err) {
       console.log(err);
     }
