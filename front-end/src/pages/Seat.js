@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { listTables, getReservation } from "../utils/api";
+import { getTables, getReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useHistory } from "react-router-dom";
 import { assignTable } from "../utils/api";
@@ -17,7 +17,7 @@ function Seat() {
   function loadTables() {
     const abortController = new AbortController();
     setError(null);
-    listTables(abortController.signal).then(setTables).catch(setError);
+    getTables(abortController.signal).then(setTables).catch(setError);
     getReservation(reservation_id, abortController.signal)
       .then(setReservation)
       .catch(setError);

@@ -2,13 +2,20 @@
   margin: 0px;
   display: flex;
   flex-direction: column;
+  row-gap: 7px;
 }
 
-label {
+.inputfield label {
   margin: 0px;
 }
 
 .inputfield p {
   margin: 0 0 5px 0px;
   color: red;
+}
+
+.inputfield input {
+  border-radius: 7px;
+  border: 1px solid #9ca3af;
+  padding: 0.4em;
 }

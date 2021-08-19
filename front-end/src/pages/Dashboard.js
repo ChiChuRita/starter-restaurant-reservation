@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { getReservations, getTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 import Reservation from "../components/Reservation";
@@ -45,11 +45,11 @@ function Dashboard() {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    getReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     setTablesError(null);
-    listTables(abortController.signal).then(setTables).catch(setTablesError);
+    getTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -60,9 +60,11 @@ function Dashboard() {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <button onClick={() => setQuery(previous(date))}>Previous</button>
-      <button onClick={() => setQuery(today())}>Today</button>
-      <button onClick={() => setQuery(next(date))}>Next</button>
+      <div className="button-container">
+        <button onClick={() => setQuery(previous(date))}>Previous</button>
+        <button onClick={() => setQuery(today())}>Today</button>
+        <button onClick={() => setQuery(next(date))}>Next</button>
+      </div>
       <div className="reservations-container">
         {reservations.map((resData, index) => (
           <Reservation key={index} reservationData={resData} />

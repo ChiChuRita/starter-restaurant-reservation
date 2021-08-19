@@ -16,16 +16,20 @@ function Table({ tableData }) {
       <div className="table-data">
         <h1>Table {tableData.table_name}</h1>
         <p>Capacity: {tableData.capacity}</p>
-      </div>
-      <div className="availability">
-        <div>
-          {!tableData.reservation_id ? (
-            <p data-table-id-status={tableData.table_id}>free</p>
-          ) : (
-            <p data-table-id-status={tableData.table_id}>occupied</p>
-          )}
+        <div className="availability">
+          <div
+            className={
+              !tableData.reservation_id ? "status free" : "status occupied"
+            }
+          ></div>
+          <div>
+            {!tableData.reservation_id ? (
+              <p data-table-id-status={tableData.table_id}>free</p>
+            ) : (
+              <p data-table-id-status={tableData.table_id}>occupied</p>
+            )}
+          </div>
         </div>
-        <div className={!tableData.reservation_id ? "free" : "occupied"}></div>
       </div>
       <div className="button-container">
         {tableData.reservation_id && (

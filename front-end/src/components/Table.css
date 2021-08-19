@@ -1,46 +1,51 @@
 .table {
   display: flex;
   justify-content: space-between;
-  border-radius: 12px;
+  align-items: center;
+  border-radius: 15px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-  padding: 18px 28px;
+  padding: 1.5rem 2rem;
+}
+
+.table .table-data {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.75em;
+}
+
+.table .availability {
+  display: flex;
+  align-items: center;
+}
+
+.table .availability p {
+  margin: 0px;
+  margin-left: 0.5em;
+}
+
+.table .status {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+}
+
+.table .occupied {
+  background-color: #ba0000;
+}
+
+.table .free {
+  background-color: #76ca66;
 }
 
 .table h1 {
   margin: 0;
+  font-weight: normal;
   font-size: 24px;
 }
 
 .table p {
   margin: 0px;
-  margin-top: 10px;
   font-size: 20px;
-}
-
-.availability {
-  display: flex;
-  align-items: center;
-}
-
-.availability p {
-  margin: 0px;
-}
-
-.occupied {
-  background-color: #ba0000;
-  height: 24px;
-  width: 24px;
-  margin-left: 10px;
-  border-radius: 50%;
-}
-
-.free {
-  background-color: #76ca66;
-  height: 24px;
-  width: 24px;
-  margin-bottom: 2px;
-  margin-left: 10px;
-  border-radius: 50%;
 }
 
 .table button {
@@ -61,4 +66,18 @@
   background: #116bcce0;
 
   transition: 300ms;
+}
+
+@media only screen and (max-width: 768px) {
+  .table button {
+    font-size: 14px;
+  }
+
+  .table h1 {
+    font-size: 16px;
+  }
+
+  .table p {
+    font-size: 14px;
+  }
 }

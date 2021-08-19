@@ -11,5 +11,34 @@
   display: grid;
   grid-template-columns: 1;
   row-gap: 25px;
-  margin: 25px 0px;
+  margin: 0;
+}
+
+.button-container {
+  display: flex;
+  column-gap: 15px;
+}
+
+button {
+  margin: 0;
+  padding: 8px 1em;
+
+  border: none;
+  outline: none;
+
+  color: white;
+  font-size: 20px;
+  background: #116acc;
+  border-radius: 7px;
+  text-align: center;
+
+  transition: 300ms;
+}
+
+button:hover {
+  text-decoration: none;
+  background: #116bcce0;
+  outline: none;
+
+  transition: 300ms;
 }
