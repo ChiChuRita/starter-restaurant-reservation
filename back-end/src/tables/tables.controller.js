@@ -21,6 +21,7 @@ async function insertTable(req, res, next) {
 
   let table_id = await service.insertTable(data);
 
+  console.log("successfully inserted new table", { table_id, ...data });
   //responses with the inserted table including the assigned table_id
   res.status(201).json({ data: { table_id, ...data } });
 }
@@ -58,6 +59,9 @@ async function seat(req, res, next) {
   }
 
   await service.seat(table, reservation);
+  console.log(
+    `succesfully assigned table (${table.table_id}) to reservation (${reservation.reservation_id})`
+  );
 
   //unfortunately the front-end-tests expect a emtpy json response
   res.json({});
@@ -87,6 +91,7 @@ async function deleteSeating(req, res, next) {
     });
 
   await service.deleteSeating(table);
+  console.log(`succesfully removed table assigment`);
   res.sendStatus(200);
 }
 

@@ -58,6 +58,11 @@ async function insertReservation(req, res, next) {
 
   let reservation_id = await service.insertReservation(data);
 
+  console.log("successfully inserted new reservation", {
+    reservation_id,
+    ...data,
+  });
+
   //responses with the inserted reservation including the assigned reservation_id
   res.status(201).json({ data: { reservation_id, ...data } });
 }
@@ -79,6 +84,10 @@ async function updateReservation(req, res, next) {
     });
 
   await service.updateReservation({ reservation_id, ...data });
+  console.log("successfully updated a reservation", {
+    reservation_id,
+    ...data,
+  });
 
   //responses with the updated reservation data
   res.json({ data: data });
@@ -116,6 +125,7 @@ async function updateReservationStatus(req, res, next) {
 
   await service.updateReservationStatus(reservation_id, status);
 
+  console.log(`successfully updated the reservation status to ${status}`);
   //responses with the new given status
   res.json({ data: { status } });
 }
