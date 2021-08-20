@@ -5,7 +5,7 @@ function asyncErrorBoundary(delegate, defaultStatus) {
       .then(() => delegate(request, response, next))
       .catch((error = {}) => {
         const { status = defaultStatus, message = error } = error;
-        console.log("[Error on API call]:", { status, message });
+        console.error("[Error on API call]:", { status, message });
         next({
           status,
           message,

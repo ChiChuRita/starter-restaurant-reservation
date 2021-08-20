@@ -91,8 +91,10 @@ async function deleteSeating(req, res, next) {
     });
 
   await service.deleteSeating(table);
-  console.log(`succesfully removed table assigment`);
-  res.sendStatus(200);
+  console.log(`successfully removed table assigment`);
+
+  //unfortunately the front-end-tests expect a emtpy json response
+  res.json({});
 }
 
 module.exports = {
