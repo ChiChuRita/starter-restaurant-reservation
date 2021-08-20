@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { getTables, getReservation } from "../utils/api";
 import { assignTable } from "../utils/api";
 import { asDateString } from "../utils/date-time";
 
 import ErrorAlert from "../layout/ErrorAlert";
-import { useHistory } from "react-router-dom";
+
+import "./Seat.css";
 
 //page for seating a reservation (US-04)
 function Seat() {
@@ -54,20 +55,22 @@ function Seat() {
     <main>
       <h1>Assign Table</h1>
       <div className="d-md-flex mb-3">
-        <ErrorAlert error={error} />
-        <select name="table_id" ref={selection}>
-          {tables.map((table, index) => (
-            <option
-              key={index}
-              name={table.table_id}
-              value={table.table_id}
-            >{`${table.table_name} - ${table.capacity}`}</option>
-          ))}
-        </select>
-        <button type="submit" onClick={submit}>
-          Submit
-        </button>
-        <button onClick={cancel}>Cancel</button>
+        <div className="assign-table-form">
+          <ErrorAlert error={error} />
+          <select name="table_id" ref={selection}>
+            {tables.map((table, index) => (
+              <option
+                key={index}
+                name={table.table_id}
+                value={table.table_id}
+              >{`${table.table_name} - ${table.capacity}`}</option>
+            ))}
+          </select>
+          <button type="submit" onClick={submit}>
+            Submit
+          </button>
+          <button onClick={cancel}>Cancel</button>
+        </div>
       </div>
     </main>
   );

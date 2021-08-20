@@ -1,0 +1,20 @@
+.assign-table-form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  min-width: 300px;
+}
+
+.assign-table-form button {
+  outline: none;
+}
+
+.assign-table-form button:hover {
+  outline: none;
+}
+
+.assign-table-form select {
+  border-radius: 7px;
+  border: 1px solid #9ca3af;
+  padding: 0.4em;
+}
