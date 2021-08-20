@@ -1,6 +1,6 @@
-import "../components/formik/Form.css";
 import NewReservationForm from "../components/formik/NewReservationForm";
 
+//page for creating a new reservation (US-01)
 function NewReservation() {
   return (
     <main>

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import SearchForm from "../components/formik/SearchForm";
 import { getReservations } from "../utils/api";
+
+import SearchForm from "../components/formik/SearchForm";
 import Reservation from "../components/Reservation";
 import ErrorAlert from "../layout/ErrorAlert";
 
 import "./Search.css";
 
+//page for searching a reservation via the mobile_number (US-07)
 function Search() {
   const [query, setQuery] = useState(null);
 
@@ -14,6 +16,7 @@ function Search() {
 
   useEffect(loadReservations, [query]);
 
+  //fetches the reservations with the mobile_number
   function loadReservations() {
     if (!query) return;
     const abortController = new AbortController();

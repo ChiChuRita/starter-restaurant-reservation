@@ -60,7 +60,7 @@ async function seat(req, res, next) {
 
   await service.seat(table, reservation);
   console.log(
-    `succesfully assigned table (${table.table_id}) to reservation (${reservation.reservation_id})`
+    `successfully assigned table (${table.table_id}) to reservation (${reservation.reservation_id})`
   );
 
   //unfortunately the front-end-tests expect a emtpy json response

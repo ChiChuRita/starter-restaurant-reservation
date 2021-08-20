@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getReservations, getTables } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert";
-
-import Reservation from "../components/Reservation";
-import Table from "../components/Table";
-
 import useQuery from "../utils/useQuery";
 import { today, next, previous, formatAsDate } from "../utils/date-time";
+
+import ErrorAlert from "../layout/ErrorAlert";
+import Reservation from "../components/Reservation";
+import Table from "../components/Table";
 
 import "./Dashboard.css";
 
@@ -24,24 +23,27 @@ function Dashboard() {
   const [tablesError, setTablesError] = useState(null);
 
   const [date, setDate] = useState(today());
+
   let query = useQuery();
 
-  // sets the date for the dashboard if date is provided in the query
-  useEffect(() => {
-    //checks wheter the date query is valid, if not date of today will be used
+  useEffect(loadDate, [query]);
+  useEffect(loadDashboard, [date]);
+
+  //refreshed the page if date is changed
+  function setQuery(date) {
+    window.location = `/dashboard/?date=${date}`;
+  }
+
+  //sets the date for the dashboard if date is provided in the query
+  function loadDate() {
     try {
       setDate(formatAsDate(query.get("date")));
     } catch {
       setDate(today());
     }
-  }, [query]);
-
-  useEffect(loadDashboard, [date]);
-
-  function setQuery(date) {
-    window.location = `/dashboard/?date=${date}`;
   }
 
+  //fetches the reservations and tables from the api
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);

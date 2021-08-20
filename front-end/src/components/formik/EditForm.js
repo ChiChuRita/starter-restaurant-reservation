@@ -1,19 +1,24 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { updateReservation } from "../../utils/api";
 import { reservationSchema } from "../../utils/validation";
-import { useHistory } from "react-router-dom";
-
-import InputField from "./InputField";
 import {
   asDateString,
   formatAsDate,
   formatAsTime,
 } from "../../utils/date-time";
 
-const NewReservationForm = ({ reservation }) => {
+import InputField from "./InputField";
+
+import "./Form.css";
+
+//this form is created with the third-party libary formik which will handle the error output for the user
+//form to edit the reservation (US-08)
+const EditForm = ({ reservation }) => {
   let history = useHistory();
 
+  //if the sumbit button is pushed the reservation data gets updated and the user gets redirected to the dashboard
   async function onSubmit(data) {
     try {
       await updateReservation(reservation.reservation_id, data);
@@ -23,6 +28,7 @@ const NewReservationForm = ({ reservation }) => {
     }
   }
 
+  //if the cancel button is pushed the reservation data gets not updated and the user gets redirected to the dashboard
   function onCancel() {
     try {
       history.push(
@@ -44,6 +50,7 @@ const NewReservationForm = ({ reservation }) => {
         people: reservation.people,
       }}
       onSubmit={onSubmit}
+      //automatically connects to yup and validates the input via yup, if yup detects some invalid input it will get outputed to the user
       validationSchema={reservationSchema}
     >
       {(fprops) => (
@@ -74,4 +81,4 @@ const NewReservationForm = ({ reservation }) => {
   );
 };
 
-export default NewReservationForm;
+export default EditForm;

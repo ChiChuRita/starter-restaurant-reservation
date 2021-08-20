@@ -1,5 +1,6 @@
 import NewTableForm from "../components/formik/NewTableForm";
 
+//page for creating a new table (US-04)
 function NewTable() {
   return (
     <main>

@@ -1,9 +1,10 @@
 import React from "react";
-import { cancelReservation } from "../utils/api";
-import "./Reservation.css";
 import { useHistory } from "react-router";
+import { cancelReservation } from "../utils/api";
 
-//component which renders one specific reservation with the data fetched from the api
+import "./Reservation.css";
+
+//component which renders a reservation with the data fetched from the api
 function Reservation({ reservationData, search }) {
   const {
     reservation_id,
@@ -22,10 +23,15 @@ function Reservation({ reservationData, search }) {
     return `${first_name} ${last_name}`;
   }
 
+  //if the cancel button is pushed it cancels the reservation (US-08)
   async function onCancel() {
     if (!window.confirm("Do you want to cancel this reservation?")) return;
-    await cancelReservation(reservation_id);
-    history.go(0);
+    try {
+      await cancelReservation(reservation_id);
+      history.go(0);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

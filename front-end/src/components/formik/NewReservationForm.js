@@ -1,15 +1,20 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { formatAsDate, today } from "../../utils/date-time";
 import { insertNewReservation } from "../../utils/api";
 import { reservationSchema } from "../../utils/validation";
-import { useHistory } from "react-router-dom";
 
 import InputField from "./InputField";
 
+import "./Form.css";
+
+//this form is created with the third-party libary formik which will handle the error output for the user
+//form to create a new reservation (US-01)
 const NewReservationForm = () => {
   let history = useHistory();
 
+  //if the submit button is pushed it inserts the new reservation to the database and then the user gets redirected to the dashboard
   async function onSubmit(data) {
     try {
       await insertNewReservation(data);
@@ -19,6 +24,7 @@ const NewReservationForm = () => {
     }
   }
 
+  //if the cancel button is pushed the user is redirected to the previous page
   function onCancel() {
     try {
       history.goBack();
@@ -33,11 +39,12 @@ const NewReservationForm = () => {
         first_name: "",
         last_name: "",
         mobile_number: "",
-        reservation_date: today(),
-        reservation_time: new Date().toLocaleTimeString().substring(0, 5),
+        reservation_date: today(), //automatically puts the date of today for better user experience
+        reservation_time: new Date().toLocaleTimeString().substring(0, 5), //automatically puts the time of now for better user experience
         people: 1,
       }}
       onSubmit={onSubmit}
+      //automatically connects to yup and validates the input via yup, if yup detects some invalid input it will get outputed to the user
       validationSchema={reservationSchema}
     >
       {(fprops) => (

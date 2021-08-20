@@ -1,13 +1,19 @@
 import React from "react";
-import { insertNewTable } from "../../utils/api";
-import { Formik, Form } from "formik";
-import InputField from "./InputField";
 import { useHistory } from "react-router";
+import { Formik, Form } from "formik";
+import { insertNewTable } from "../../utils/api";
 import { tableSchema } from "../../utils/validation";
 
+import InputField from "./InputField";
+
+import "./Form.css";
+
+//this form is created with the third-party libary formik which will handle the error output for the user
+//form to create a new table (US-04)
 function NewTableForm() {
   let history = useHistory();
 
+  //if the submit button is pushed the new table gets inserted to the database
   async function onSubmit(values) {
     try {
       await insertNewTable(values);
@@ -17,6 +23,7 @@ function NewTableForm() {
     }
   }
 
+  //if the cancel button is pushed the user is redirected to the previous page
   function onCancel() {
     try {
       history.goBack();
@@ -31,6 +38,7 @@ function NewTableForm() {
         table_name: "",
       }}
       onSubmit={onSubmit}
+      //automatically connects to yup and validates the input via yup, if yup detects some invalid input it will get outputed to the user
       validationSchema={tableSchema}
     >
       {(fprops) => (

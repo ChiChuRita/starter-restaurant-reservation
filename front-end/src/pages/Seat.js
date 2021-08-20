@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { getTables, getReservation } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert";
-import { useHistory } from "react-router-dom";
 import { assignTable } from "../utils/api";
 import { asDateString } from "../utils/date-time";
 
+import ErrorAlert from "../layout/ErrorAlert";
+import { useHistory } from "react-router-dom";
+
+//page for seating a reservation (US-04)
 function Seat() {
   const { reservation_id } = useParams();
   const [tables, setTables] = useState([]);
@@ -14,6 +16,9 @@ function Seat() {
   const selection = useRef(null);
   const history = useHistory();
 
+  useEffect(loadTables, [reservation_id]);
+
+  //fetches all tables
   function loadTables() {
     const abortController = new AbortController();
     setError(null);
@@ -24,8 +29,7 @@ function Seat() {
     return () => abortController.abort();
   }
 
-  useEffect(loadTables, [reservation_id]);
-
+  //if form is submitted the table gets assigned
   async function submit() {
     const abortController = new AbortController();
     try {
@@ -41,6 +45,7 @@ function Seat() {
     }
   }
 
+  //if the cancel button is pressed return to the previous page
   function cancel() {
     history.goBack();
   }

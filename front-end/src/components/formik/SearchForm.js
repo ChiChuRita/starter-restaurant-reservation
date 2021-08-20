@@ -1,11 +1,14 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import InputField from "./InputField";
 import { searchSchema } from "../../utils/validation";
+
+import InputField from "./InputField";
 
 import "./Form.css";
 
-function NewTableForm({ setQuery }) {
+//search form for finding a reservation via mobile_number (US-07)
+function SearchForm({ setQuery }) {
+  //if the submit button is pushed all reservations with the mobile_number get fetched and displayed
   function onSubmit(values) {
     try {
       setQuery(values.mobile_number);
@@ -20,6 +23,7 @@ function NewTableForm({ setQuery }) {
         mobile_number: "",
       }}
       onSubmit={onSubmit}
+      //automatically connects to yup and validates the input via yup, if yup detects some invalid input it will get outputed to the user
       validationSchema={searchSchema}
     >
       {(fprops) => (
@@ -34,4 +38,4 @@ function NewTableForm({ setQuery }) {
   );
 }
 
-export default NewTableForm;
+export default SearchForm;
