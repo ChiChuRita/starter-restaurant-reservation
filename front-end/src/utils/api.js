@@ -106,7 +106,7 @@ export async function insertNewReservation(resData, signal) {
  */
 export async function insertNewTable(tData, signal) {
   const url = new URL(`${API_BASE_URL}/tables/`);
-  await fetch(url, {
+  await fetchJson(url, {
     signal,
     headers,
     method: "POST",
@@ -135,7 +135,7 @@ export async function assignTable(reservation_id, table_id, signal) {
  */
 export async function deleteAssignment(table_id, signal) {
   const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
-  await fetch(url, {
+  await fetchJson(url, {
     signal,
     headers,
     method: "DELETE",
