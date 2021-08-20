@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-//seeds the reservations table for testing purpose
+//seeds the tables table for testing purpose (US-04)
 exports.seed = function (knex) {
   return knex
     .raw("TRUNCATE TABLE tables RESTART IDENTITY CASCADE")
