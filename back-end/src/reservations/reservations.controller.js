@@ -50,7 +50,7 @@ async function getReservation(req, res, next) {
 }
 
 //API-Endpoint for inserting a new reservation into the database (US-01)
-async function insertReservation(req, res) {
+async function insertReservation(req, res, next) {
   const { data } = req.body;
 
   //formal parameter and/or query validation

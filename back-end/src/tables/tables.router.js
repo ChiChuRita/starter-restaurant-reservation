@@ -7,9 +7,10 @@
 const router = require("express").Router();
 const controller = require("./tables.controller");
 
-router.route("/").get(controller.list);
-router.route("/").post(controller.newTable);
-router.route("/:table_id/seat").put(controller.assignSeat);
-router.route("/:table_id/seat").delete(controller.deleteAssignment);
+router.route("/").get(controller.getTables);
+router.route("/").post(controller.insertTable);
+
+router.route("/:table_id/seat").put(controller.seat);
+router.route("/:table_id/seat").delete(controller.deleteSeating);
 
 module.exports = router;

@@ -1,85 +1,98 @@
-const yup = require("yup");
+const service = require("./tables.service");
+const { getReservation } = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+
+//third-party validation libary
+const yup = require("yup");
 const { tableSchema } = require("../utils/validation");
 
-const { getReservation } = require("../reservations/reservations.service");
-const {
-  getTables,
-  insertTable,
-  assignReservationToSeat,
-  availableSeats,
-  deleteSeating,
-  getTable,
-} = require("./tables.service");
-
-async function list(req, res, next) {
-  res.json({ data: await getTables() });
+//API-Endpoint for requesting all tables (US-04)
+async function getTables(req, res, next) {
+  //responses with all tables
+  res.json({ data: await service.getTables() });
 }
 
-async function newTable(req, res, next) {
-  await tableSchema.validate(req.body.data);
-  let table_id = await insertTable(req.body.data);
-  res.status(201).json({ data: { table_id, ...req.body.data } });
+//API-Endpoint for inserting a new table (US-04)
+async function insertTable(req, res, next) {
+  const { data } = req.body;
+
+  //formal parameter and/or query validation
+  await tableSchema.validate(data);
+
+  let table_id = await service.insertTable(data);
+
+  //responses with the inserted table including the assigned table_id
+  res.status(201).json({ data: { table_id, ...data } });
 }
 
-async function assignSeat(req, res, next) {
-  const tableID = req.params.table_id;
+//API-Endpoint for assigned a table to a reservation (US-04)
+async function seat(req, res, next) {
+  const { table_id } = req.params;
   const { reservation_id } = req.body.data;
 
   //formal validation of parameter and body
-  await yup.number().validate(tableID);
+  await yup.number().validate(table_id);
   await yup.number().validate(reservation_id);
 
   let reservation = await getReservation(reservation_id);
 
+  //futher validation
   if (!reservation)
     return next({
       message: `No reservation found with reservation_id = ${reservation_id}`,
       status: 404,
     });
 
+  //futher validation
   if (reservation.status == "seated")
     return next({ message: "reservation already seated!", status: 400 });
 
-  await assignReservationToSeat(tableID, reservation);
+  let table = await service.checkTable(table_id, reservation);
+
+  //futher validation
+  if (!table) {
+    return next({
+      message: `No valid table! [Either the table is already occupied or has too little capacity]`,
+      status: 400,
+    });
+  }
+
+  await service.seat(table, reservation);
+
+  //unfortunately the front-end-tests expect a emtpy json response
   res.json({});
 }
 
-async function getAvailableTables(req, res, next) {
-  //validation
-  const { reservation_id } = req.query;
-  await yup
-    .number()
-    .typeError("No valid reservation_id provided")
-    .validate(reservation_id);
-
-  let reservation = await getReservation(reservation_id);
-  //if no reservation with that id was found
-  if (!reservation)
-    next({ message: "No reservation with that ID found!", status: 400 });
-
-  res.json({ data: await availableSeats(reservation.people) });
-}
-
-async function deleteAssignment(req, res, next) {
+//API-Endpoint for freeing a table from a reservation (US-05)
+async function deleteSeating(req, res, next) {
   const { table_id } = req.params;
 
-  let table = await getTable(table_id);
+  //formal validation of parameter and body
+  await yup.number().validate(table_id);
 
+  let table = await service.getTable(table_id);
+
+  //futher validation
   if (!table)
-    next({
+    return next({
       message: `No table with table_id = ${table_id} found!`,
       status: 404,
     });
 
-  await deleteSeating(table);
+  //futher validation
+  if (!table.reservation_id)
+    return next({
+      message: `Table not occupied!`,
+      status: 400,
+    });
+
+  await service.deleteSeating(table);
   res.sendStatus(200);
 }
 
 module.exports = {
-  newTable: asyncErrorBoundary(newTable, 400),
-  list: asyncErrorBoundary(list, 400),
-  assignSeat: asyncErrorBoundary(assignSeat, 400),
-  getAvailableTables: asyncErrorBoundary(getAvailableTables, 400),
-  deleteAssignment: asyncErrorBoundary(deleteAssignment, 400),
+  getTables: asyncErrorBoundary(getTables, 400),
+  insertTable: asyncErrorBoundary(insertTable, 400),
+  seat: asyncErrorBoundary(seat, 400),
+  deleteSeating: asyncErrorBoundary(deleteSeating, 400),
 };
