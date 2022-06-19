@@ -4,14 +4,14 @@ services:
   database:
     image: postgres
     environment:
-      - POSTGRES_PASSWORD=autobank71
+      - POSTGRES_PASSWORD=$PASSWORD
     ports:
       - 5432:5432
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      - PGADMIN_DEFAULT_EMAIL=ra.singh069@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=autobank71
+      - PGADMIN_DEFAULT_EMAIL=$EMAIL
+      - PGADMIN_DEFAULT_PASSWORD=$PASSWORD
     ports:
       - 1337:80
     links:
